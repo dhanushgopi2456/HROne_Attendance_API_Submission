@@ -2,7 +2,7 @@
 
 <p align="center">
   <img
-    src="https://capsule-render.vercel.app/api?type=waving&color=0:0F172A,50:2563EB,100:06B6D4&height=200&section=header&text=Employee%20Attendance%20%26%20Analytics%20API&fontSize=28&fontColor=FFFFFF&animation=fadeIn&fontAlignY=38&desc=FastAPI%20%7C%20PyMongo%20%7C%20MongoDB&descSize=16&descAlignY=60"
+    src="https://capsule-render.vercel.app/api?type=waving&color=0:0F172A,50:2563EB,100:06B6D4&height=200&section=header&text=Employee%20Attendance%20and%20Analytics%20API&fontSize=28&fontColor=FFFFFF&animation=fadeIn&fontAlignY=38&desc=FastAPI%20%7C%20PyMongo%20%7C%20MongoDB&descSize=16&descAlignY=60"
     alt="Employee Attendance and Analytics API banner"
     width="100%"
   />
