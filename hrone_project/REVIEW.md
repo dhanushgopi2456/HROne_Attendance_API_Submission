@@ -1,0 +1,19 @@
+# Code Review Findings
+
+Review scope: `app/main.py`, `openapi.yaml`, test fixtures, sample data, requirements, and the assignment's R1-R10 rules.
+
+| # | Finding | Repair |
+|---|---|---|
+| 1 | The department trend grouped attendance days as strings, then passed BSON dates to `$densify`. MongoDB requires the densified field and bounds to have compatible types. The pipeline also did not calculate daily headcount, workday, attendance rate, or the seven-day average, and the route returned aggregation rows rather than its constructed `items`. | The trend pipeline now groups on BSON UTC dates, unions an indexed department seed so a no-log range still has an anchor, densifies inclusive calendar dates, calculates as-of-day headcount and daily metrics, then computes half-up rates and the seven-row moving average. The handler returns the public `items` shape. |
+| 2 | The test fixture looked under `candidate_kit/sample_data`, which does not exist in this project. It also dropped the database after every test, which discarded the indexes while the session-scoped app only created them once. | The fixture reads `sample_data` at the project root, uses a unique test database, resets collections per test without dropping indexes, and removes the database at session teardown. |
+| 3 | `tests/test_basic.py` called an undefined `t.get(...)`, and the rest of that test file was only a placeholder. Several imports were unused. | Replaced the broken placeholder with endpoint and business-rule tests covering the existing API surfaces. |
+| 4 | `requirements.txt` omitted the test runner and HTTP client used by the test suite. | Added `pytest` and `httpx`. |
+| 5 | Trend and explain handlers exposed `from_date` / `to_date` instead of the contract's `from` / `to` query parameters. The attendance and explain status parameters were also not represented as the documented enum. | Added query aliases for `from` and `to`, and typed status values using the allowed status literal set. |
+| 6 | PATCH accepted a missing request body at the function-signature level, and a supplied `status: null` could flow through validation. PATCH timestamps also retained milliseconds despite R1's second truncation rule. | Made the PATCH body required, reject explicit null status, and truncate corrected instants before validation, computation, storage, and audit generation. |
+| 7 | Department summary returned items without the contract-required department sort. Optional exact-match department filters treated an empty string as if no filter had been supplied. | Added aggregation sorting and distinguish absent filters from explicitly supplied values. |
+| 8 | Index creation caught every exception and continued with success-shaped startup, while a module-import-time call could attempt MongoDB access before application startup. | Indexes are now created in the FastAPI lifespan, idempotently, with failures surfaced to startup rather than silently ignored. |
+| 9 | Month strings were pattern-checked but year zero could pass the pattern and fail later as an unhandled date error. | Month-bound calculation now converts invalid calendar months into HTTP 422 responses. |
+
+The implementation already had the core concurrency controls: a unique `(emp_code, date)` index for punch-in, a conditional `punch_out: null` update for punch-out, and an optimistic state guard combined with `$push` for corrections. These were retained and are now covered by concurrent request tests.
+
+Validation has to run against MongoDB 6.0+ because the analytics depend on actual aggregation features such as `$densify`, `$unionWith`, and `$setWindowFields`. No MongoDB service, Docker executable, or configured `MONGO_URI` was available in the review environment, so the integration results must be reported separately from static/syntax checks.
