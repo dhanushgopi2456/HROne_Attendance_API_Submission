@@ -1,8 +1,14 @@
 # 🕒 Employee Attendance & Analytics API
 
+```html
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rounded&color=0:0F172A,45:1D4ED8,100:06B6D4&height=200&section=header&text=Attendance%20%26%20Analytics%20API&fontSize=32&fontColor=FFFFFF&animation=fadeIn&fontAlignY=40&desc=FastAPI%20%7C%20PyMongo%20%7C%20MongoDB&descSize=16&descAlignY=65" width="100%" alt="Employee Attendance and Analytics API banner"/>
+  <img
+    src="https://capsule-render.vercel.app/api?type=waving&color=0:0F172A,50:2563EB,100:06B6D4&height=200&section=header&text=Employee%20Attendance%20%26%20Analytics%20API&fontSize=28&fontColor=FFFFFF&animation=fadeIn&fontAlignY=38&desc=FastAPI%20%7C%20PyMongo%20%7C%20MongoDB&descSize=16&descAlignY=60"
+    alt="Employee Attendance and Analytics API banner"
+    width="100%"
+  />
 </p>
+```
 
 <p align="center">
   <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=17&duration=3000&pause=900&color=0891B2&center=true&vCenter=true&width=750&lines=Employee+Attendance+Management;Aggregation-Powered+Workforce+Analytics;Auditable+Attendance+Regularization;Race-Safe+Punch-In+Operations;Built+with+FastAPI+and+MongoDB" alt="Animated project description"/>
